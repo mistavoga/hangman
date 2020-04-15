@@ -1,3 +1,4 @@
+# coding: utf-8
 
 class Game
 
@@ -5,19 +6,19 @@ class Game
 
   require 'yaml'
 
-  attr_accessor :correct_letters, :incorrect_letters, :mistakes, :random_letter
+  attr_accessor :correct_letters, :incorrect_letters, :mistakes, :random
   
   def initialize
     @correct_letters = []
     @incorrect_letters = []
-    @fitting_words = []
-    @random = pick_word
+    @fitting_words = Array.new
+    @random = pick_word.split('')
+    @mistakes = 0
   end
 
   def intro
     puts "Welcome to hangman! Choose your name:"
-    @player = Player.new(gets.chomp)
-    
+    @player = Player.new(gets.chomp)    
   end
 
   def pick_word
@@ -32,28 +33,34 @@ class Game
   end
 
   def play_round
-    make_guess
-    
+    intro
+    loop
   end
 
   def loop
-    
+    turn = 0
+    while turn < 12
+      make_guess
+    end
   end
   
   def make_guess
-    puts "Choose your letter:"
-    chosen_letter = gets.chomp
+    puts "Hello #{@player}. Choose your letter:"
+    chosen_letter = gets.chomp.upcase
 
-    @random.each do |i|
-      if i == chosen_letter
-        @correct_letters << chosen_letter
-      else
-        @incorrect_letter << chosen_letter
-        mistakes += 1
-      end
+    unless chosen_letter.length == 1
+      puts "Sorry, please type only one letter at the time"
+    else
+      @random.each do |i|
+        if i == chosen_letter && chosen_letter.length == 1
+          @correct_letters << chosen_letter
+        elsif i != chosen_letter && chosen_letter.length == 1
+          @incorrect_letters << chosen_letter
+          @mistakes += 1
+        end
       
+      end
     end
-    
   end
 
 end
