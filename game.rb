@@ -22,7 +22,7 @@ class Game
   end
 
   def serialize_game
-    Dir.mkdir("saved") unless Dir.exists? "saved"
+    Dir.mkdir("saved") unless Dir.exist? "saved"
     puts "How should the saved_state be called?"
     filename = gets.chomp
     File.open("saved/#{filename}.yml", "w") do |serialize|
@@ -32,10 +32,24 @@ class Game
         incorrect_letters: @incorrect_letters,
         random: @random,
         mistakes: @mistakes,
-        bool: @bool = false,
+        bool: @bool,
       }))
       serialize.puts game
     end
+  end
+
+  def load_game
+    puts "Type the name of the file you want to load:"
+    answer = gets.chomp
+    if File.exist? "saved/#{answer}.yml"
+      saved_game = YAML::load File.read("saved/#{answer}.yml")
+      @player = saved_game[:player]
+      @correct_letters = saved_game[:correct_letters]
+      @incorrect_letters = saved_game[:incorrect_letters]
+      @mistakes = saved_game[:mistakes]
+      @bool = saved_game[:bool]
+      @random = saved_game[:random]
+    else puts "Sorry, unfortunately this file doesnt exist."     end
   end
 
   def pick_word
@@ -61,15 +75,21 @@ class Game
   end
 
   def play_round
-    intro
     loop
   end
 
   def loop
+    puts " Do you want to load an existing game (admit with y)?"
+    answer = gets.chomp
+    if answer == "y"
+      load_game
+    else
+      intro
+    end
     while @mistakes < 12
       make_guess
       show_board
-      puts "Do you want to save your game?"
+      puts "Do you want to save your game? (admit with y)"
       answer = gets.chomp
       if answer == "y"
         serialize_game
@@ -102,4 +122,4 @@ class Game
 end
 
 play = Game.new
-play.play_round
+play.loop

@@ -1,15 +1,14 @@
 ---
 :player: !ruby/object:Player
-  name: nico
-:correct_letters: []
-:incorrect_letters:
-- G
+  name: nicolas
+:correct_letters:
+- F
+:incorrect_letters: []
 :random:
-- H
+- F
 - O
-- O
-- D
-- E
-- D
-:mistakes: 1
-:bool: false
+- A
+- M
+- Y
+:mistakes: 0
+:bool: true
