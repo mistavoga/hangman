@@ -1,8 +1,0 @@
-class Board
-
-  def show_board
-    
-    
-  end
-  
-end
